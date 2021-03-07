@@ -1,0 +1,49 @@
+# Creating Network Graphs
+## Undirected and Directed Graphs
+library(igraph)
+# For small, toy graphs, the function graph.formula can be used. For example,
+g <- graph.formula(1-4, 1-2, 1-3, 2-5, 2-3, 2-4, 3-7, 3-5, 4-5, 4-6, 4-7, 5-6, 6-7)
+# creates a graph object g with v = 7 vertices
+V(g)
+# and 10 edges
+E(g)
+# This same information, in a slightly more compressed format, is recovered easily using the relevant structure command.
+str(g)
+# A visual representation of this graph, generated simply through the command
+plot(g)
+## Direct graph has -+ convention in graph.formula rest of the things are same as undirected graph
+dg <- graph.formula(1-+4, 1-+2, 1-+3, 2-+2, 2++3, 4++1, 4-+2, 3-+4)
+plot(dg)
+## directed graph with vertex names
+dg1 <- graph.formula(Sam-+Mary, Sam-+Tom, Mary++Tom)
+str(dg1)
+# Alternatively, vertex labels can be changed from the default after initially creating the graph, by modifying the name vertex attribute of the graph object.
+V(dg1)$name <- c("Sam", "Mary", "Tom")
+# Edge
+E(dg1)
+# Adjacency matrix
+get.adjacency(g)
+# Operations on graph
+## Subgraph
+h <- induced.subgraph(g, 1:5)
+str(h)
+## inclusion and exclusion
+h1 <- g - vertices(c(6,7))
+h2 <- h1 + vertices(c(6,7))
+g <- h2 + edges(c(4,6),c(4,7),c(5,6),c(6,7))
+## Union
+h3 <- h
+h4 <- graph.formula(4-6, 4-7, 5-6, 6-7)
+g1 <- graph.union(h3,h4)
+## Disjoint Union
+g2<- h3 %du% h4
+plot(g2)
+## intersection
+g3<- g %s% h
+plot(g3)
+## difference
+g4<- g %m% h
+plot(g4)
+## complement graph
+g5<-complementer(g)
+plot(g5)
